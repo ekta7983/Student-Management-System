@@ -103,4 +103,87 @@ th {
   .navigation button:hover {
     background-color: #45a049;
   }
+
+  /* Styling the student-actions container */
+#student-actions {
+    margin: 20px auto;
+    padding: 15px;
+    max-width: 500px;
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Heading style */
+  #student-actions h3 {
+    font-size: 1.5rem;
+    color: #333;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  
+  /* Input fields styling */
+  #student-actions input {
+    width: calc(100% - 20px);
+    padding: 8px 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box;
+  }
+  
+  /* Buttons styling */
+  #student-actions button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 8px 12px;
+    margin: 5px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  #student-actions button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Update form container */
+  #update-student-form {
+    margin-top: 15px;
+    padding: 10px;
+    border: 1px dashed #007bff;
+    border-radius: 4px;
+    background-color: #eef6ff;
+  }
+  
+  /* Sub-heading in the update form */
+  #update-student-form h4 {
+    font-size: 1.2rem;
+    color: #0056b3;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  /* Responsive styling */
+  @media (max-width: 600px) {
+    #student-actions {
+      max-width: 90%;
+    }
+  
+    #student-actions button {
+      width: 100%;
+      margin: 8px 0;
+    }
+  
+    #student-actions input {
+      width: 100%;
+    }
+  }
+  .parent{
+    display:flex;
+  }
   

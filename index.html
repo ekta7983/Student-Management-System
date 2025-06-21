@@ -14,6 +14,7 @@
   </div>
   
   <h1>Add Student</h1>
+  <div class="parent">
   <form id="addStudentForm">
     <label for="FirstName">First Name:</label>
     <input type="text" id="FirstName" name="FirstName" required>
@@ -42,6 +43,31 @@
 
     <button type="submit">Add Student</button>
   </form>
+  <div id="student-actions">
+    <h3>Manage Students</h3>
+    <div>
+      <label for="student-id">Student ID:</label>
+      <input type="number" id="student-id" placeholder="Enter Student ID" />
+    </div>
+    <div>
+      <button onclick="deleteStudent()">Delete Student</button>
+      <button onclick="updateStudent()">Update Student</button>
+    </div>
+  
+    <!-- Form for updating student details -->
+    <div id="update-student-form" style="display: none; margin-top: 10px;">
+      <h4>Update Student Details</h4>
+      <input type="text" id="update-firstname" placeholder="First Name" />
+      <input type="text" id="update-lastname" placeholder="Last Name" />
+      <input type="text" id="update-gender" placeholder="Gender (Male/Female/Other)" />
+      <input type="date" id="update-dob" placeholder="Date of Birth" />
+      <input type="text" id="update-phone" placeholder="Phone Number" />
+      <input type="email" id="update-email" placeholder="Email" />
+      <input type="text" id="update-address" placeholder="Address" />
+      <button onclick="submitStudentUpdate()">Submit Update</button>
+    </div>
+  </div>
+</div>
   <h2>Student List</h2>
 <table id="studentTable" border="1">
   <thead>
@@ -138,6 +164,59 @@
 
   // Fetch students when the page loads
   fetchStudents();
+
+  function deleteStudent() {
+  const studentId = document.getElementById("student-id").value;
+
+  if (!studentId) {
+    alert("Please enter a Student ID");
+    return;
+  }
+
+  fetch(`http://localhost:3000/students/${studentId}`, { method: "DELETE" })
+    .then(response => response.json())
+    .then(data => alert(data.message))
+    .catch(err => console.error(err));
+}
+
+function updateStudent() {
+  const studentId = document.getElementById("student-id").value;
+
+  if (!studentId) {
+    alert("Please enter a Student ID");
+    return;
+  }
+
+  document.getElementById("update-student-form").style.display = "block";
+}
+
+function submitStudentUpdate() {
+  const studentId = document.getElementById("student-id").value;
+
+  const updatedData = {
+    FirstName: document.getElementById("update-firstname").value,
+    LastName: document.getElementById("update-lastname").value,
+    Gender: document.getElementById("update-gender").value,
+    DateOfBirth: document.getElementById("update-dob").value,
+    PhoneNumber: document.getElementById("update-phone").value,
+    Email: document.getElementById("update-email").value,
+    Address: document.getElementById("update-address").value,
+  };
+
+  fetch(`http://localhost:3000/students/${studentId}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(updatedData),
+  })
+    .then(response => response.json())
+    .then(data => {
+      alert(data.message);
+      document.getElementById("update-student-form").style.display = "none";
+    })
+    .catch(err => console.error(err));
+}
+
+  
   </script>
 </body>
 </html>

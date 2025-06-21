@@ -29,6 +29,7 @@
 
 .courses-section form {
   margin-top: 20px;
+  width:50%;
 }
 
 .courses-section form label {
@@ -65,6 +66,118 @@
   background-color: #45a049;
 }
 
+/* General container styling */
+#course-actions {
+  max-width: 500px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #fefefe;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading styling */
+#course-actions h3 {
+  font-size: 1.8rem;
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Label styling */
+#course-actions label {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #555;
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* Input styling */
+#course-actions input {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+
+/* Button styling */
+#course-actions button {
+  font-size: 1rem;
+  padding: 10px 15px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Delete button styling */
+#course-actions button:nth-child(1) {
+  background-color: #f44336;
+  color: #fff;
+}
+
+#course-actions button:nth-child(1):hover {
+  background-color: #d32f2f;
+}
+
+/* Update button styling */
+#course-actions button:nth-child(2) {
+  background-color: #2196f3;
+  color: #fff;
+}
+
+#course-actions button:nth-child(2):hover {
+  background-color: #1976d2;
+}
+
+/* Update course form styling */
+#update-course-form {
+  display: none;
+  margin-top: 20px;
+  padding-top: 10px;
+  border-top: 1px solid #ddd;
+}
+
+/* Form heading styling */
+#update-course-form h4 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+/* Form input styling */
+#update-course-form input {
+  width: calc(100% - 20px);
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+/* Submit update button styling */
+#update-course-form button {
+  background-color: #4caf50;
+  color: #fff;
+  font-size: 1rem;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#update-course-form button:hover {
+  background-color: #388e3c;
+}
+
 
     </style>
 </head>
@@ -92,6 +205,7 @@
         
         <!-- Add Course Form -->
         <h3>Add a New Course</h3>
+        <div class="parentc">
         <form id="addCourseForm">
           <label for="courseName">Course Name:</label>
           <input type="text" id="courseName" name="CourseName" required />
@@ -105,10 +219,29 @@
           <button type="submit">Add Course</button>
         </form>
       </div>
+      <div id="course-actions">
+        <h3>Manage Courses</h3>
+        <div>
+          <label for="course-id">Course ID:</label>
+          <input type="number" id="course-id" placeholder="Enter Course ID" />
+        </div>
+        <div>
+          <button onclick="deleteCourse()">Delete Course</button>
+          <button onclick="updateCourse()">Update Course</button>
+        </div>
       
+        <div id="update-course-form" style="display: none; margin-top: 10px;">
+          <h4>Update Course Details</h4>
+          <input type="text" id="update-coursename" placeholder="Course Name" />
+          <input type="number" id="update-duration" placeholder="Duration (months)" />
+          <input type="number" id="update-fee" placeholder="Course Fee" />
+          <button onclick="submitCourseUpdate()">Submit Update</button>
+        </div>
+      </div>
+    </div>
      <script>
          function navigateTo(page) {
-    window.location.href = page;
+        window.location.href = page;
   }
         document.addEventListener("DOMContentLoaded", () => {
   const coursesTable = document.getElementById("coursesTable").querySelector("tbody");
@@ -170,6 +303,54 @@
       .catch((error) => console.error("Error adding course:", error));
   });
 });
+
+function deleteCourse() {
+  const courseId = document.getElementById("course-id").value;
+
+  if (!courseId) {
+    alert("Please enter a Course ID");
+    return;
+  }
+
+  fetch(`http://localhost:3000/courses/${courseId}`, { method: "DELETE" })
+    .then(response => response.json())
+    .then(data => alert(data.message))
+    .catch(err => console.error(err));
+}
+
+function updateCourse() {
+  const courseId = document.getElementById("course-id").value;
+
+  if (!courseId) {
+    alert("Please enter a Course ID");
+    return;
+  }
+
+  document.getElementById("update-course-form").style.display = "block";
+}
+
+function submitCourseUpdate() {
+  const courseId = document.getElementById("course-id").value;
+
+  const updatedData = {
+    CourseName: document.getElementById("update-coursename").value,
+    CourseDuration: document.getElementById("update-duration").value,
+    CourseFee: document.getElementById("update-fee").value,
+  };
+
+  fetch(`http://localhost:3000/courses/${courseId}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(updatedData),
+  })
+    .then(response => response.json())
+    .then(data => {
+      alert(data.message);
+      document.getElementById("update-course-form").style.display = "none";
+    })
+    .catch(err => console.error(err));
+}
+
 
      </script>
 </body>
